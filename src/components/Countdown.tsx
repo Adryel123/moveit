@@ -1,12 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styles from '../styles/components/Countdown.module.css'
+import { FaTimes, FaPlay, FaCheckCircle } from 'react-icons/fa'
+import { ChallengesContext } from '../contexts/ChallengesContext'
+
+
+let countdownTimeout: NodeJS.Timeout
 
 export function Countdown() {
-  const [time, setTime] = useState(25 * 60)
-  const [timeStart, setTimeStart] = useState(Date.now())
-  const startInMinutes = 25 * 60
+  const { startNewChallenge } = useContext(ChallengesContext)
 
-  const [active, setActive] = useState(false)
+  const startInSeconds = .05 * 60
+  const [time, setTime] = useState(startInSeconds)
+  const [isActive, setIsActive] = useState(false)
+  const [hasFinished, setHashFinished] = useState(false)
 
   const minutes = Math.floor(time / 60)
   const seconds = time % 60
@@ -16,20 +22,26 @@ export function Countdown() {
 
 
   function startCountdown() {
-    setTimeStart(Date.now())
-    setActive(true)
+    setIsActive(true)
+  }
+
+  function resetCountdown() {
+    setIsActive(false)
+    clearInterval(countdownTimeout)
+    setTime(startInSeconds)
   }
 
   useEffect(() => {
-    if (active && time > 0) {
-      setTimeout(() => {
-        // variação de tempo (agora - início)
-        const dTime = Math.floor((Date.now() - timeStart) / 1000)
-        // Tempo total do cronômetro menos variação
-        setTime(startInMinutes - dTime)
+    if (isActive && time > 0) {
+      countdownTimeout = setTimeout(() => {
+        setTime(time - 1)
       }, 1000)
+    } else if (isActive && time === 0) {
+      setHashFinished(true)
+      setIsActive(false)
+      startNewChallenge()
     }
-  }, [active, time])
+  }, [isActive, time])
 
   return (
     <div>
@@ -45,13 +57,42 @@ export function Countdown() {
         </div>
       </div>
 
-      <button
-        type="button"
-        className={styles.countdownButton}
-        onClick={startCountdown}
-      >
-        Iniciar um ciclo
-      </button>
+      {hasFinished ?
+        (
+          <button
+            disabled
+            className={styles.countdownButton}
+          >
+            Ciclo encerrado
+            <FaCheckCircle />
+          </button>
+        ) : (
+          <>
+            {isActive ?
+              (
+                <button
+                  type="button"
+                  className={`${styles.countdownButton} ${styles.countdownButtonActive}`}
+                  onClick={resetCountdown}
+                >
+                  Abandonar ciclo
+                  <FaTimes />
+                </button>
+              ) :
+              (
+                <button
+                  type="button"
+                  className={styles.countdownButton}
+                  onClick={startCountdown}
+                >
+                  Iniciar um ciclo
+                  <FaPlay />
+                </button>
+              )
+            }
+          </>
+        )
+      }
     </div>
   )
 }
