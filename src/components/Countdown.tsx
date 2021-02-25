@@ -2,46 +2,21 @@ import { useContext, useEffect, useState } from 'react'
 import styles from '../styles/components/Countdown.module.css'
 import { FaTimes, FaPlay, FaCheckCircle } from 'react-icons/fa'
 import { ChallengesContext } from '../contexts/ChallengesContext'
-
-
-let countdownTimeout: NodeJS.Timeout
+import { CountdownContext } from '../contexts/CountdownContext'
 
 export function Countdown() {
-  const { startNewChallenge } = useContext(ChallengesContext)
-
-  const startInSeconds = .05 * 60
-  const [time, setTime] = useState(startInSeconds)
-  const [isActive, setIsActive] = useState(false)
-  const [hasFinished, setHashFinished] = useState(false)
-
-  const minutes = Math.floor(time / 60)
-  const seconds = time % 60
+  const {
+    minutes,
+    seconds,
+    hasFinished,
+    isActive,
+    resetCountdown,
+    startCountdown
+  } = useContext(CountdownContext)
 
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, '0').split('')
   const [secondLeft, secondRight] = String(seconds).padStart(2, '0').split('')
 
-
-  function startCountdown() {
-    setIsActive(true)
-  }
-
-  function resetCountdown() {
-    setIsActive(false)
-    clearInterval(countdownTimeout)
-    setTime(startInSeconds)
-  }
-
-  useEffect(() => {
-    if (isActive && time > 0) {
-      countdownTimeout = setTimeout(() => {
-        setTime(time - 1)
-      }, 1000)
-    } else if (isActive && time === 0) {
-      setHashFinished(true)
-      setIsActive(false)
-      startNewChallenge()
-    }
-  }, [isActive, time])
 
   return (
     <div>
