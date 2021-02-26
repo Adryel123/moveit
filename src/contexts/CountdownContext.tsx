@@ -21,15 +21,19 @@ let countdownTimeout: NodeJS.Timeout
 export function CountdownProvider({ children }: CountdownProviderProps) {
   const { startNewChallenge } = useContext(ChallengesContext)
 
-  const startInSeconds = .05 * 60
+  const startInSeconds = 25 * 60
   const [time, setTime] = useState(startInSeconds)
   const [isActive, setIsActive] = useState(false)
   const [hasFinished, setHashFinished] = useState(false)
+
+  // for precision reasons:
+  const [inicialCanonicalTime, setInicialCanonicalTime] = useState(Date.now())
 
   const minutes = Math.floor(time / 60)
   const seconds = time % 60
 
   function startCountdown() {
+    setInicialCanonicalTime(Date.now())
     setIsActive(true)
   }
 
@@ -43,7 +47,10 @@ export function CountdownProvider({ children }: CountdownProviderProps) {
   useEffect(() => {
     if (isActive && time > 0) {
       countdownTimeout = setTimeout(() => {
-        setTime(time - 1)
+        // Delta time
+        const dTime = Math.floor((Date.now() - inicialCanonicalTime) / 1000)
+        const newTime = startInSeconds - dTime
+        setTime(newTime < 0 ? 0 : newTime)
       }, 1000)
     } else if (isActive && time === 0) {
       setHashFinished(true)

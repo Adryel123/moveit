@@ -24,11 +24,11 @@ export default function Home(props: HomeProps) {
       currentExperience={props.currentExperience}
       challengesCompleted={props.challengesCompleted}
     >
-      <div className={styles.container}>
-        <Head>
-          <title>Início | move.it</title>
-        </Head>
+      <Head>
+        <title>Início | move.it</title>
+      </Head>
 
+      <div className={styles.container}>
         <ExperienceBar />
 
         <CountdownProvider>
