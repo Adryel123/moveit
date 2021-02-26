@@ -46,10 +46,6 @@ export function ChallengesProvider({
   const experienceToNextLevel = Math.pow((level + 1) * 4, 2)
 
   useEffect(() => {
-    console.log(level)
-    console.log(currentExperience)
-    console.log(challengesCompleted)
-
     Cookies.set('level', String(level))
     Cookies.set('currentExperience', String(currentExperience))
     Cookies.set('challengesCompleted', String(challengesCompleted))
@@ -77,9 +73,13 @@ export function ChallengesProvider({
     new Audio('/notification.mp3').play()
 
     if (Notification.permission === 'granted') {
-      new Notification('Novo desafio 🎉', {
-        body: `Valendo ${challenge.amount}xp!`
-      })
+      try {
+        new Notification('Novo desafio 🎉', {
+          body: `Valendo ${challenge.amount}xp!`
+        })
+      } catch {
+        console.log("nada de notificação :/")
+      }
     }
   }
 
