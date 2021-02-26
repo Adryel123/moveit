@@ -2,7 +2,13 @@
 Projeto criado na quarta NLW
 
 ## Screenshots
-Comming soon :)
+Que tal dar uma olhada em como o projeto ficou?
+
+<img src="screenshots/img1-web.png" width="500">
+<img src="screenshots/img2-web.png" width="500">
+<img src="screenshots/img3-web.png" width="500">
+<img src="screenshots/img4-web.png" width="500">
+<img src="screenshots/img1-mobile.jpg" height="700">
 
 ## Rodando a aplicação:
 
