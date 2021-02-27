@@ -1,0 +1,55 @@
+.form {
+  display: flex;
+  flex-direction: row;
+}
+
+.form input {
+  height: 5rem;
+  width: 320px;
+  padding: 0 3rem;
+  font-size: 1.25rem;
+
+  color: var(--white);
+
+  background: linear-gradient(90deg, #323b9b 0%, rgba(85, 94, 197, 0.2) 100%);
+  border-radius: 5px 0px 0px 5px;
+  border: transparent;
+}
+
+.form *:focus {
+  outline: 2px solid var(--white);
+}
+
+.form input::-webkit-input-placeholder {
+  color: var(--text-highlight);
+}
+
+.button {
+  margin-left: 2px;
+  height: 5rem;
+  width: 5rem;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  border: 0;
+  border-radius: 0 5px 5px 0;
+  
+  font-size: 2rem;
+
+  background: var(--green);
+  color: var(--dark-green);
+  
+  transition: all .2s;
+}
+
+.button:not(:disabled):hover {
+  filter: brightness(.9);
+}
+
+.button:disabled {
+  background: var(--blue-dark);
+  color: var(--white);
+  cursor: not-allowed;
+}
